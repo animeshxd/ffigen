@@ -10,7 +10,7 @@ import 'package:ffigen/src/header_parser/clang_bindings/clang_bindings.dart'
 /// Name of the dynamic library file according to current platform.
 String get dylibFileName {
   String name;
-  if (Platform.isLinux) {
+  if (Platform.isLinux || Platform.isAndroid) {
     name = libclang_dylib_linux;
   } else if (Platform.isMacOS) {
     name = libclang_dylib_macos;
@@ -231,6 +231,7 @@ const linuxDylibLocations = {
   '/usr/lib/llvm-15/lib/',
   '/usr/lib/',
   '/usr/lib64/',
+  '/data/data/com.termux/files/usr/lib/',
 };
 const windowsDylibLocations = {
   r'C:\Program Files\LLVM\bin\',

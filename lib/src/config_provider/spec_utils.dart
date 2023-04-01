@@ -475,7 +475,7 @@ bool headersValidator(List<String> name, dynamic value) {
 /// error and throws an Exception if not found.
 String findDylibAtDefaultLocations() {
   String? k;
-  if (Platform.isLinux) {
+  if (Platform.isLinux || Platform.isAndroid) {
     for (final l in strings.linuxDylibLocations) {
       k = findLibclangDylib(l);
       if (k != null) return k;
