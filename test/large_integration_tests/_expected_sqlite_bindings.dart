@@ -9585,7 +9585,8 @@ class SQLite {
     ffi.Pointer<sqlite3> pBlocked,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Void Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Int)>>
+                ffi.Void Function(
+                    ffi.Pointer<ffi.Pointer<ffi.Void>> apArg, ffi.Int nArg)>>
         xNotify,
     ffi.Pointer<ffi.Void> pNotifyArg,
   ) {
@@ -9603,7 +9604,8 @@ class SQLite {
               ffi.Pointer<
                   ffi.NativeFunction<
                       ffi.Void Function(
-                          ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Int)>>,
+                          ffi.Pointer<ffi.Pointer<ffi.Void>> apArg,
+                          ffi.Int nArg)>>,
               ffi.Pointer<ffi.Void>)>>('sqlite3_unlock_notify');
   late final _sqlite3_unlock_notify = _sqlite3_unlock_notifyPtr.asFunction<
       int Function(
@@ -9611,7 +9613,7 @@ class SQLite {
           ffi.Pointer<
               ffi.NativeFunction<
                   ffi.Void Function(
-                      ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Int)>>,
+                      ffi.Pointer<ffi.Pointer<ffi.Void>> apArg, ffi.Int nArg)>>,
           ffi.Pointer<ffi.Void>)>();
 
   /// CAPI3REF: String Comparison
@@ -10716,20 +10718,20 @@ class SQLite {
                       ffi.Void Function(ffi.Pointer<ffi.Void>)>>)>();
 }
 
-class sqlite3 extends ffi.Opaque {}
+final class sqlite3 extends ffi.Opaque {}
 
-class sqlite3_file extends ffi.Struct {
+final class sqlite3_file extends ffi.Struct {
   /// Methods for an open file
   external ffi.Pointer<sqlite3_io_methods> pMethods;
 }
 
-class sqlite3_io_methods extends ffi.Opaque {}
+final class sqlite3_io_methods extends ffi.Opaque {}
 
-class sqlite3_mutex extends ffi.Opaque {}
+final class sqlite3_mutex extends ffi.Opaque {}
 
-class sqlite3_api_routines extends ffi.Opaque {}
+final class sqlite3_api_routines extends ffi.Opaque {}
 
-class sqlite3_vfs extends ffi.Struct {
+final class sqlite3_vfs extends ffi.Struct {
   /// Structure version number (currently 3)
   @ffi.Int()
   external int iVersion;
@@ -10848,7 +10850,7 @@ typedef sqlite_int64 = ffi.LongLong;
 typedef sqlite3_syscall_ptr
     = ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>;
 
-class sqlite3_mem_methods extends ffi.Struct {
+final class sqlite3_mem_methods extends ffi.Struct {
   /// Memory allocation function
   external ffi
           .Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Int)>>
@@ -10890,11 +10892,11 @@ class sqlite3_mem_methods extends ffi.Struct {
 typedef sqlite3_uint64 = sqlite_uint64;
 typedef sqlite_uint64 = ffi.UnsignedLongLong;
 
-class sqlite3_stmt extends ffi.Opaque {}
+final class sqlite3_stmt extends ffi.Opaque {}
 
-class sqlite3_value extends ffi.Opaque {}
+final class sqlite3_value extends ffi.Opaque {}
 
-class sqlite3_context extends ffi.Opaque {}
+final class sqlite3_context extends ffi.Opaque {}
 
 /// CAPI3REF: Virtual Table Instance Object
 /// KEYWORDS: sqlite3_vtab
@@ -10912,7 +10914,7 @@ class sqlite3_context extends ffi.Opaque {}
 /// prior to assigning a new string to zErrMsg.  ^After the error message
 /// is delivered up to the client application, the string will be automatically
 /// freed by sqlite3_free() and the zErrMsg field will be zeroed.
-class sqlite3_vtab extends ffi.Struct {
+final class sqlite3_vtab extends ffi.Struct {
   /// The module for this virtual table
   external ffi.Pointer<sqlite3_module> pModule;
 
@@ -10938,7 +10940,7 @@ class sqlite3_vtab extends ffi.Struct {
 /// module or until the [database connection] closes.  The content
 /// of this structure must not change while it is registered with
 /// any database connection.
-class sqlite3_module extends ffi.Struct {
+final class sqlite3_module extends ffi.Struct {
   @ffi.Int()
   external int iVersion;
 
@@ -10969,16 +10971,17 @@ class sqlite3_module extends ffi.Struct {
       xBestIndex;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab>)>>
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab)>>
       xDisconnect;
 
   external ffi.Pointer<
-      ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab>)>> xDestroy;
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab)>>
+      xDestroy;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<sqlite3_vtab>,
-              ffi.Pointer<ffi.Pointer<sqlite3_vtab_cursor>>)>> xOpen;
+          ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab,
+              ffi.Pointer<ffi.Pointer<sqlite3_vtab_cursor>> ppCursor)>> xOpen;
 
   external ffi.Pointer<
       ffi.NativeFunction<
@@ -11020,37 +11023,42 @@ class sqlite3_module extends ffi.Struct {
               ffi.Pointer<sqlite3_int64>)>> xUpdate;
 
   external ffi.Pointer<
-      ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab>)>> xBegin;
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab)>>
+      xBegin;
 
   external ffi.Pointer<
-      ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab>)>> xSync;
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab)>>
+      xSync;
 
   external ffi.Pointer<
-      ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab>)>> xCommit;
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab)>>
+      xCommit;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab>)>>
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<sqlite3_vtab> pVTab)>>
       xRollback;
 
   external ffi.Pointer<
       ffi.NativeFunction<
           ffi.Int Function(
-              ffi.Pointer<sqlite3_vtab>,
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<sqlite3_vtab> pVtab,
+              ffi.Int nArg,
+              ffi.Pointer<ffi.Char> zName,
               ffi.Pointer<
-                  ffi.Pointer<
-                      ffi.NativeFunction<
-                          ffi.Void Function(
-                              ffi.Pointer<sqlite3_context>,
-                              ffi.Int,
-                              ffi.Pointer<ffi.Pointer<sqlite3_value>>)>>>,
-              ffi.Pointer<ffi.Pointer<ffi.Void>>)>> xFindFunction;
+                      ffi.Pointer<
+                          ffi.NativeFunction<
+                              ffi.Void Function(
+                                  ffi.Pointer<sqlite3_context>,
+                                  ffi.Int,
+                                  ffi.Pointer<ffi.Pointer<sqlite3_value>>)>>>
+                  pxFunc,
+              ffi.Pointer<ffi.Pointer<ffi.Void>> ppArg)>> xFindFunction;
 
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<sqlite3_vtab>, ffi.Pointer<ffi.Char>)>> xRename;
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<sqlite3_vtab> pVtab, ffi.Pointer<ffi.Char> zNew)>>
+      xRename;
 
   /// The methods above are in version 1 of the sqlite_module object. Those
   /// below are for version 2 and greater.
@@ -11173,7 +11181,7 @@ class sqlite3_module extends ffi.Struct {
 /// It may therefore only be used if
 /// sqlite3_libversion_number() returns a value greater than or equal to
 /// 3009000.
-class sqlite3_index_info extends ffi.Struct {
+final class sqlite3_index_info extends ffi.Struct {
   /// Number of entries in aConstraint
   @ffi.Int()
   external int nConstraint;
@@ -11222,7 +11230,7 @@ class sqlite3_index_info extends ffi.Struct {
   external int colUsed;
 }
 
-class sqlite3_index_constraint extends ffi.Struct {
+final class sqlite3_index_constraint extends ffi.Struct {
   /// Column constrained.  -1 for ROWID
   @ffi.Int()
   external int iColumn;
@@ -11240,7 +11248,7 @@ class sqlite3_index_constraint extends ffi.Struct {
   external int iTermOffset;
 }
 
-class sqlite3_index_orderby extends ffi.Struct {
+final class sqlite3_index_orderby extends ffi.Struct {
   /// Column number
   @ffi.Int()
   external int iColumn;
@@ -11251,7 +11259,7 @@ class sqlite3_index_orderby extends ffi.Struct {
 }
 
 /// Outputs
-class sqlite3_index_constraint_usage extends ffi.Struct {
+final class sqlite3_index_constraint_usage extends ffi.Struct {
   /// if >0, constraint is part of argv to xFilter
   @ffi.Int()
   external int argvIndex;
@@ -11276,14 +11284,14 @@ class sqlite3_index_constraint_usage extends ffi.Struct {
 ///
 /// This superclass exists in order to define fields of the cursor that
 /// are common to all implementations.
-class sqlite3_vtab_cursor extends ffi.Struct {
+final class sqlite3_vtab_cursor extends ffi.Struct {
   /// Virtual table of this cursor
   external ffi.Pointer<sqlite3_vtab> pVtab;
 }
 
-class sqlite3_blob extends ffi.Opaque {}
+final class sqlite3_blob extends ffi.Opaque {}
 
-class sqlite3_mutex_methods extends ffi.Struct {
+final class sqlite3_mutex_methods extends ffi.Struct {
   external ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>> xMutexInit;
 
   external ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>> xMutexEnd;
@@ -11317,11 +11325,11 @@ class sqlite3_mutex_methods extends ffi.Struct {
       xMutexNotheld;
 }
 
-class sqlite3_str extends ffi.Opaque {}
+final class sqlite3_str extends ffi.Opaque {}
 
-class sqlite3_pcache extends ffi.Opaque {}
+final class sqlite3_pcache extends ffi.Opaque {}
 
-class sqlite3_pcache_page extends ffi.Struct {
+final class sqlite3_pcache_page extends ffi.Struct {
   /// The content of the page
   external ffi.Pointer<ffi.Void> pBuf;
 
@@ -11329,7 +11337,7 @@ class sqlite3_pcache_page extends ffi.Struct {
   external ffi.Pointer<ffi.Void> pExtra;
 }
 
-class sqlite3_pcache_methods2 extends ffi.Struct {
+final class sqlite3_pcache_methods2 extends ffi.Struct {
   @ffi.Int()
   external int iVersion;
 
@@ -11344,9 +11352,9 @@ class sqlite3_pcache_methods2 extends ffi.Struct {
       xShutdown;
 
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Pointer<sqlite3_pcache> Function(ffi.Int, ffi.Int, ffi.Int)>>
-      xCreate;
+      ffi.NativeFunction<
+          ffi.Pointer<sqlite3_pcache> Function(
+              ffi.Int szPage, ffi.Int szExtra, ffi.Int bPurgeable)>> xCreate;
 
   external ffi.Pointer<
       ffi.NativeFunction<
@@ -11388,7 +11396,7 @@ class sqlite3_pcache_methods2 extends ffi.Struct {
       xShrink;
 }
 
-class sqlite3_pcache_methods extends ffi.Struct {
+final class sqlite3_pcache_methods extends ffi.Struct {
   external ffi.Pointer<ffi.Void> pArg;
 
   external ffi
@@ -11401,7 +11409,8 @@ class sqlite3_pcache_methods extends ffi.Struct {
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Pointer<sqlite3_pcache> Function(ffi.Int, ffi.Int)>> xCreate;
+          ffi.Pointer<sqlite3_pcache> Function(
+              ffi.Int szPage, ffi.Int bPurgeable)>> xCreate;
 
   external ffi.Pointer<
       ffi.NativeFunction<
@@ -11437,7 +11446,7 @@ class sqlite3_pcache_methods extends ffi.Struct {
       xDestroy;
 }
 
-class sqlite3_backup extends ffi.Opaque {}
+final class sqlite3_backup extends ffi.Opaque {}
 
 /// CAPI3REF: Database Snapshot
 /// KEYWORDS: {snapshot} {sqlite3_snapshot}
@@ -11457,14 +11466,14 @@ class sqlite3_backup extends ffi.Opaque {}
 /// version of the database file so that it is possible to later open a new read
 /// transaction that sees that historical version of the database rather than
 /// the most recent version.
-class sqlite3_snapshot extends ffi.Struct {
+final class sqlite3_snapshot extends ffi.Struct {
   @ffi.Array.multi([48])
   external ffi.Array<ffi.UnsignedChar> hidden;
 }
 
 /// A pointer to a structure of the following type is passed as the first
 /// argument to callbacks registered using rtree_geometry_callback().
-class sqlite3_rtree_geometry extends ffi.Struct {
+final class sqlite3_rtree_geometry extends ffi.Struct {
   /// Copy of pContext passed to s_r_g_c()
   external ffi.Pointer<ffi.Void> pContext;
 
@@ -11493,7 +11502,7 @@ typedef sqlite3_rtree_dbl = ffi.Double;
 /// Note that the first 5 fields of this structure are identical to
 /// sqlite3_rtree_geometry.  This structure is a subclass of
 /// sqlite3_rtree_geometry.
-class sqlite3_rtree_query_info extends ffi.Struct {
+final class sqlite3_rtree_query_info extends ffi.Struct {
   /// pContext from when function registered
   external ffi.Pointer<ffi.Void> pContext;
 
@@ -11763,7 +11772,7 @@ class sqlite3_rtree_query_info extends ffi.Struct {
 ///
 /// xPhraseNextColumn()
 /// See xPhraseFirstColumn above.
-class Fts5ExtensionApi extends ffi.Struct {
+final class Fts5ExtensionApi extends ffi.Struct {
   /// Currently always set to 3
   @ffi.Int()
   external int iVersion;
@@ -11903,17 +11912,17 @@ class Fts5ExtensionApi extends ffi.Struct {
               ffi.Pointer<ffi.Int>)>> xPhraseNextColumn;
 }
 
-class Fts5Context extends ffi.Opaque {}
+final class Fts5Context extends ffi.Opaque {}
 
-class Fts5PhraseIter extends ffi.Struct {
+final class Fts5PhraseIter extends ffi.Struct {
   external ffi.Pointer<ffi.UnsignedChar> a;
 
   external ffi.Pointer<ffi.UnsignedChar> b;
 }
 
-class Fts5Tokenizer extends ffi.Opaque {}
+final class Fts5Tokenizer extends ffi.Opaque {}
 
-class fts5_tokenizer extends ffi.Struct {
+final class fts5_tokenizer extends ffi.Struct {
   external ffi.Pointer<
       ffi.NativeFunction<
           ffi.Int Function(
@@ -11945,55 +11954,55 @@ class fts5_tokenizer extends ffi.Struct {
                           ffi.Int)>>)>> xTokenize;
 }
 
-class fts5_api extends ffi.Struct {
+final class fts5_api extends ffi.Struct {
   /// Currently always set to 2
   @ffi.Int()
   external int iVersion;
 
   /// Create a new tokenizer
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<fts5_api>,
-                  ffi.Pointer<ffi.Char>,
-                  ffi.Pointer<ffi.Void>,
-                  ffi.Pointer<fts5_tokenizer>,
-                  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<fts5_api> pApi,
+              ffi.Pointer<ffi.Char> zName,
+              ffi.Pointer<ffi.Void> pContext,
+              ffi.Pointer<fts5_tokenizer> pTokenizer,
+              ffi.Pointer<
                       ffi.NativeFunction<
-                          ffi.Void Function(ffi.Pointer<ffi.Void>)>>)>>
-      xCreateTokenizer;
+                          ffi.Void Function(ffi.Pointer<ffi.Void>)>>
+                  xDestroy)>> xCreateTokenizer;
 
   /// Find an existing tokenizer
   external ffi.Pointer<
       ffi.NativeFunction<
           ffi.Int Function(
-              ffi.Pointer<fts5_api>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Void>>,
-              ffi.Pointer<fts5_tokenizer>)>> xFindTokenizer;
+              ffi.Pointer<fts5_api> pApi,
+              ffi.Pointer<ffi.Char> zName,
+              ffi.Pointer<ffi.Pointer<ffi.Void>> ppContext,
+              ffi.Pointer<fts5_tokenizer> pTokenizer)>> xFindTokenizer;
 
   /// Create a new auxiliary function
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<fts5_api>,
-                  ffi.Pointer<ffi.Char>,
-                  ffi.Pointer<ffi.Void>,
-                  fts5_extension_function,
-                  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<fts5_api> pApi,
+              ffi.Pointer<ffi.Char> zName,
+              ffi.Pointer<ffi.Void> pContext,
+              fts5_extension_function xFunction,
+              ffi.Pointer<
                       ffi.NativeFunction<
-                          ffi.Void Function(ffi.Pointer<ffi.Void>)>>)>>
-      xCreateFunction;
+                          ffi.Void Function(ffi.Pointer<ffi.Void>)>>
+                  xDestroy)>> xCreateFunction;
 }
 
 typedef fts5_extension_function = ffi.Pointer<
     ffi.NativeFunction<
         ffi.Void Function(
-            ffi.Pointer<Fts5ExtensionApi>,
-            ffi.Pointer<Fts5Context>,
-            ffi.Pointer<sqlite3_context>,
-            ffi.Int,
-            ffi.Pointer<ffi.Pointer<sqlite3_value>>)>>;
+            ffi.Pointer<Fts5ExtensionApi> pApi,
+            ffi.Pointer<Fts5Context> pFts,
+            ffi.Pointer<sqlite3_context> pCtx,
+            ffi.Int nVal,
+            ffi.Pointer<ffi.Pointer<sqlite3_value>> apVal)>>;
 
 const String SQLITE_VERSION = '3.32.3';
 
